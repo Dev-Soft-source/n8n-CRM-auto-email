@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lead capture — n8n test form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <h1>Lead capture test form</h1>
+        <p class="lede">
+          Sends a <code>POST</code> with JSON to your n8n webhook (path
+          <code>lead-capture</code>), matching the fields in your implementation guide.
+        </p>
+      </header>
+
+      <section class="panel settings" aria-labelledby="settings-heading">
+        <h2 id="settings-heading">Webhook</h2>
+        <label class="field">
+          <span class="label">n8n webhook URL</span>
+          <input
+            id="webhookUrl"
+            type="url"
+            autocomplete="off"
+            placeholder="https://your-n8n-domain.com/webhook-test/lead-capture"
+            spellcheck="false"
+          />
+        </label>
+        <label class="row-check">
+          <input id="useProxy" type="checkbox" checked />
+          <span
+            >Send through this app’s server proxy (avoids browser CORS to n8n). Requires
+            <code>npm start</code> in this folder.</span
+          >
+        </label>
+        <p class="hint">
+          <strong>Test URL</strong> (<code>…/webhook-test/lead-capture</code>): in n8n, open the
+          workflow, select the <strong>Webhook</strong> node, click
+          <strong>Listen for test event</strong>, then submit (each new listen session may need a
+          fresh click).
+        </p>
+        <p class="hint">
+          <strong>Production URL</strong> (<code>…/webhook/lead-capture</code>): turn the workflow
+          <strong>Active</strong>, then copy the webhook URL from the node. The first node must be a
+          <strong>Webhook</strong> (POST)—not Form Trigger; those use different URLs and behavior.
+        </p>
+        <p class="hint">Webhook URL is stored in this browser (<code>localStorage</code>).</p>
+      </section>
+
+      <main class="panel form-panel">
+        <form id="leadForm" novalidate>
+          <div id="formMessage" class="form-message" role="status" aria-live="polite" hidden></div>
+
+          <div class="grid">
+            <label class="field">
+              <span class="label">Name <span class="req">*</span></span>
+              <input id="name" name="name" type="text" autocomplete="name" required />
+              <span class="error" id="nameError" hidden></span>
+            </label>
+
+            <label class="field">
+              <span class="label">Email <span class="req">*</span></span>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+              <span class="error" id="emailError" hidden></span>
+            </label>
+
+            <label class="field">
+              <span class="label">Phone</span>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" />
+            </label>
+
+            <label class="field">
+              <span class="label">Company</span>
+              <input id="company" name="company" type="text" autocomplete="organization" />
+            </label>
+
+            <label class="field full">
+              <span class="label">Message</span>
+              <textarea id="message" name="message" rows="4"></textarea>
+            </label>
+
+            <label class="field full">
+              <span class="label">Source</span>
+              <input
+                id="source"
+                name="source"
+                type="text"
+                value="Website Contact Form"
+                autocomplete="off"
+              />
+            </label>
+          </div>
+
+          <!-- Honeypot: leave hidden; bots often fill it -->
+          <label class="hp" aria-hidden="true">
+            <span>Company website</span>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </label>
+
+          <div class="actions">
+            <button type="submit" class="btn primary" id="submitBtn">Submit lead</button>
+            <button type="button" class="btn ghost" id="fillSample">Fill sample data</button>
+          </div>
+        </form>
+      </main>
+
+      <footer class="footer">
+        <p>
+          <strong>Recommended:</strong> from <code>test-web-app</code> run
+          <code>npm start</code>, open <code>http://127.0.0.1:3456</code>, keep “server proxy”
+          checked, then submit. Uncheck only if n8n allows your origin in CORS or you use a
+          same-origin backend.
+        </p>
+      </footer>
+    </div>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
